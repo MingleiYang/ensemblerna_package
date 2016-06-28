@@ -1,0 +1,62 @@
+Installing EnsembleRNA for Unix and Linux operating systems:
+
+  * REQUIREMENTS
+  * INSTALLATION 
+
+=====================================================================================
+REQUIREMENTS
+=====================================================================================
+For use on a Linux/Unix operating system
+	
+	1) python (recommended version 2.7 or 3.5)
+
+	2) numpy (recommended 1.11.0) 
+		pip install numpy
+
+	3) scipy (recommended version 0.17.1)
+		pip install scipy
+
+	4) sklearn (recommended version 0.0)
+		pip install sklearn
+
+	5) jinja2 (recommended version 2.8)
+		pip install jinja2
+
+	6) ipython (recommended version 4.2.0)
+		pip install ipython
+
+	7) mpld3 (recommended version 0.2)
+		pip install mpld3
+
+	8) matplotlib (recommended version 1.5.1)
+		pip install matplotlib
+	
+	9) RNAstructure (recommended version 5.8)
+		http://rna.urmc.rochester.edu/RNAstructureWeb/
+		Download command-line applications for your platform
+		Extract to /usr/local/bin (or directory of your choice)
+		Add following 2 lines to ~/.bash_profile (path may be different)
+    			export PATH=$PATH:/usr/local/bin/RNAstructure/exe
+    			export DATAPATH=/usr/local/bin/RNAstructure/data_tables
+
+
+=====================================================================================
+INSTALLATION
+=====================================================================================
+	1) Download requirements listed above
+
+	2) Download EnsembleRNA package
+
+	3) Place package in /usr/local/bin (or directory of your choice)
+
+	4) tar -zxvf ensemblerna (extract)
+	
+	5) cd ensemblerna (enter extracted directory)
+	
+	6) sudo python setup.py install (install ensemblerna as python module)
+	
+	7) ensemblerna -h (test installation in any directory)
+
+
+
+

@@ -1,0 +1,8 @@
+# MANIFEST.in
+#
+# This tells distutils what files to distribute.
+
+include MANIFEST.in
+include README
+include LICENSE
+include INSTALL

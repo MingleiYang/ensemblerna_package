@@ -1,0 +1,91 @@
+EnsembleRNA 1.0
+    Visualize the structural ensemble for a given RNA
+
+URL
+    For more information: www.ribosnitch-ensemblerna.rhcloud.com
+
+USAGE
+    ensemblerna <fasta file> <output directory> [options]
+
+DESCRIPTION
+    EnsembleRNA is a package for the visualization and comparison of RNA structural ensembles. This package creates a stable map of conformational space for a given RNA and its mutants. The map explores the most diverse conformational space and generates the structures using established Boltzmann-weighted suboptimal sampling algorithms. Using vector representation based on arc diagram nested loop patterns, EnsembleRNA projects clusters of structures from the map into two dimensions using non-metric multi-dimensional scaling. Individual RNA ensembles are visualized in this space by fluctuating the size of the structure clusters in a bubble plot.
+    The sequence from the fasta file is the reference used to create the map of conformational space unless otherwise specified. To compare two reference structures, the same sequence or set of structures must be used to create the map of conformational space. Longer RNAs may require more sequences for a stable visualization. Selective 2'-hydroxyl acylation and primer extension (SHAPE) data can be included to guide the prediction of the reference ensemble.
+    Note: EnsembleRNA is written for use on a Linux/Unix type of operating system. Use of EnsembleRNA in any instance requires the installation of the numpy, jinja2, ipython, mpld3, matplotlib, scipy and sklearn modules for Python. Also required is the RNAstructure package from the Mathews lab.
+
+OPTIONS
+    -h, --help            show this help message and exit
+    -v, --version         show program's version number and exit
+
+    -sh --shape           Includes shape data in the reference ensemble
+                               prediction. Ignored if -d flag is used (Default is None)
+    -d --db               Dot-bracket structures for reference ensemble (Default is None)
+    -m --map              Sequence to create the map of conformational space.
+                               Ignored if -md flag is used (Default is reference fasta file)
+    -md --mapdb           Dot-bracket structures for the map of conformational space.
+                               (Default is the reference fasta file)
+    -s --size             Number of sequences for the map of conformational space.
+                               Ignored if -md flag is used (Default is 10)
+    -p --plotmap          Plot the map T/F (Default is T)
+
+    -r --range --range    Range of nucleotides to visualize.
+                               Predicted structures will include the full length of the input RNA
+                               but only the given range will be plotted
+                               (Default is 1 to sequence length)
+    -maxd --maxdistance   The maximum number of bases between the two nucleotides in a pair
+                               (Default is no restriction)
+    -t --temperature      Temperature at which the calculation takes place in Kelvin
+                               (Default is 310.15 K)
+    -si --SHAPEintercept  The intercept used with SHAPE restraints.
+                               Ignored if -d flag is used (Default is -0.6 kcal/mol)
+    -sm --SHAPEslope      The slope used with SHAPE restraints.
+                               Ignored if -d flag is used (Default is 1.8 kcal/mol)
+    -pi --plotinteractive Plot the interactive file T/F (Default is T)
+    -th --threadmax       Maximum number of threads for multi-threading. (Default is 1)
+
+OUTPUT
+    For both reference and map of conformational space
+    .csv    CSV file with cluster number, cluster size, and representative structure
+    .db     Dot-Bracket file with structures
+    .pdf    PDF file with visualization plot
+    .png    PNG file with visualization plot
+
+    Interactive visualization
+    .html  HTML file with interactive plotting
+
+REFERENCES
+	Suboptimally sampled structures are generated using the RNAstructure package 
+	http://rna.urmc.rochester.edu/RNAstructureWeb/
+	Version 5.8 (references 2, 3, 4, and 5)
+
+        1) D.H. Mathews. "Using an RNA Secondary Structure Partition Function to Determine Confidence 
+	    in Base Pairs Predicted by Free Energy Minimization." RNA, 10:1178-1190. (2004).
+        2) S. Dian, et al. "Interpreting Oligonucleotide Microarray Data to Determine RNA Secondary Structure. 
+	    Application to the 3' End of Bombyx mori R2 DNA." Biochemistry, 45:9819-9832. (2006).
+        3) D.H. Mathews. "Revolutions in RNA Secondary Structure Prediction."
+            Journal of Molecular Biology, 359:526-532. (2006).
+        4) S. Wuchty, et al. "Complete Suboptimal Folding of RNA and the Stability of Secondary Structures."
+            Biopolymers, 49:145-165. (1999).<br><br>
+        5)  Y. Ding and C.E. Lawrence. "A Statistical Sampling Algorithm for RNA Secondary Structure Prediction."
+            Nucleic Acids Research, 31:7280-7301. (2003).
+        6) E.J. Merino, et. al. "RNA structure analysis at single nucleotide resolution by selective 2‐hydroxyl 
+	    acylation and primer extension (shape)." J Am Chem Soc, 127:4223-4231. (2005).
+        7) K.E. Deigan, et al. Accurate SHAPE-directed RNA Structure Determination."
+            Proceedings of the National Academy of Sciences USA, 106:97-102. (2009).
+        8) Pearson, K. "On Lines and Planes of Closest Fit to Systems of Points in Space." 
+	    Philosophical Magazine, 11:559–572. (1901).
+        9) D.B. Carr, et al. "Scatterplot Matrix Techniques for large N." 
+	    Journal of the American Statistical Association, 389:424-436. (1987).
+        10) J. Ritz, et al. "Evaluating our ability to predict the structural disruption of RNA by SNPs." 
+	    BMC Genomics, 13(Suppl 4):S6. (2012).
+
+VERSION
+This man page documents EnsembleRNA version 1.0.
+
+AUTHORS
+Chanin Tolson Woods, Alain Laederach
+
+BUGS
+None known (yet).
+
+LAST UPDATE
+    August 2016
