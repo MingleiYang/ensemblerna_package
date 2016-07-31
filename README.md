@@ -2,7 +2,7 @@
 ensemblerna package (python-scipy-sklearn)
 
 Summary: Interactive visualization for RNA structural ensembles (Python package)
-- Accepts user input from scientists for sequence and experimental data
+- Accepts user input from scientists for sequence and experimental data in Scikit-Learn and SciPy
 - Utilizes dimensionality reduction and clustering algorithms 
 - Generates still and interactive visualizations using python matplotlib and D3.js
 - Stores and retrieves image data using MongoDB
