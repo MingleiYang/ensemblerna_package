@@ -6,3 +6,4 @@ include MANIFEST.in
 include README
 include LICENSE
 include INSTALL
+include Documentation.pdf
