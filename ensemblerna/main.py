@@ -200,7 +200,7 @@ def main():
     random.seed(113)
     
     #parse command line
-    parser = argparse.ArgumentParser(prog='EnsembleRNA', usage='ensemblerna <fasta file> <output directory> [options]', description='Visualize the structural ensemble for a given RNA. For more information please see the README file or visit http://ensemblerna.unc.edu')
+    parser = argparse.ArgumentParser(prog='EnsembleRNA', usage='ensemblerna <fasta file> <output directory> [options]', description='Visualize the structural ensemble for a given RNA. For more information please see the README file, the Documentation file, or visit http://ribosnitch-ensemblerna.rhcloud.com')
     parser.add_argument('-v', '--version',  action='version', version='%(prog)s 1.0')
     parser.add_argument('input', metavar='fasta', type=str, help='Reference fasta file. Maximum sequence length is 2500 nucleotides (Required)')
     parser.add_argument('output', metavar='outdir', type=str, help='Output directory (Required)')
