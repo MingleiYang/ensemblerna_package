@@ -1,12 +1,14 @@
 #!/usr/bin/python
+import warnings
 import matplotlib
-matplotlib.use('Agg')
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    matplotlib.use('Agg')
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import numpy as np
 import mpld3
 from mpld3 import plugins, utils
-import warnings
 import math
 import subprocess
 
