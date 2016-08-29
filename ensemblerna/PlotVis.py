@@ -4,9 +4,12 @@
     #plotRef
     #writePlotMDS
 ##########################################################################################################
+import warnings
 import numpy as np
 import matplotlib
-matplotlib.use('Agg')
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib as mpl
@@ -19,7 +22,6 @@ from sklearn.manifold import MDS
 from sklearn.metrics import euclidean_distances
 from scipy.spatial.distance import pdist
 from scipy.spatial import distance
-import warnings
 from collections import Counter
 
 ##########################################################################################################
