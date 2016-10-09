@@ -150,7 +150,7 @@ def getMapSeqs(dir, fasta_file, n, rg, rsp, thmax=1):
     indices = [0]+[i+1 for i in rg]
     
     #print update to standard out
-    print("Caculating partition functions for map of conformational space...")
+    print("Calculating partition functions for map of conformational space...")
     
     #loop through each nucleotide in the sequence
     for i in range(len(rg)+1):
