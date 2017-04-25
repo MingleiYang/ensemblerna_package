@@ -9,7 +9,8 @@ USAGE
 
 DESCRIPTION
     EnsembleRNA is a package for the visualization and comparison of RNA structural ensembles. This package 
-creates a stable map of conformational space for a given RNA and its mutants. The map explores the most diverse conformational space and generates the structures using established Boltzmann-weighted suboptimal sampling
+creates a stable map of conformational space for a given RNA and its mutants. The map explores the most diverse 
+conformational space and generates the structures using established Boltzmann-weighted suboptimal sampling
 algorithms. Using vector representation based on arc diagram nested loop patterns, EnsembleRNA projects clusters 
 of structures from the map into two dimensions using non-metric multi-dimensional scaling. Individual RNA ensembles 
 are visualized in this space by fluctuating the size of the structure clusters in a bubble plot.
