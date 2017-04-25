@@ -2,7 +2,7 @@ EnsembleRNA 1.0
     Visualize the structural ensemble for a given RNA
 
 URL
-    For more information: www.ribosnitch-ensemblerna.rhcloud.com
+    For more information: ribosnitch-ensemblerna.rhcloud.com
 
 USAGE
     ensemblerna <fasta file> <output directory> [options]
@@ -21,10 +21,12 @@ OPTIONS
     -d --db               Dot-bracket structures for reference ensemble (Default is None)
     -m --map              Sequence to create the map of conformational space.
                                Ignored if -md flag is used (Default is reference fasta file)
-    -md --mapdb           Dot-bracket structures for the map of conformational space.
-                               (Default is the reference fasta file)
-    -s --size             Number of sequences for the map of conformational space.
-                               Ignored if -md flag is used (Default is 10)
+    -md --mapdb           Dot-bracket structures for the map of conformational space. A previously 
+			       created map can be used to project new ensembles onto the same
+                               space (Default is None)
+    -s --size             Number of sequences for the map of conformational space. Higher numbers 
+			       increase structural diversity. Ignored if -md flag is used 
+			       (Default is 10)
     -p --plotmap          Plot the map T/F (Default is T)
 
     -r --range --range    Range of nucleotides to visualize.
@@ -41,6 +43,9 @@ OPTIONS
                                Ignored if -d flag is used (Default is 1.8 kcal/mol)
     -pi --plotinteractive Plot the interactive file T/F (Default is T)
     -th --threadmax       Maximum number of threads for multi-threading. (Default is 1)
+    -i --ignorestems      Ignore stems with fewer than i base pairs. (Default is 3)
+    -n --num 		  Number of Boltzmann sampled structures to produce for the visualization
+			       (Default is 1000)
 
 OUTPUT
     For both reference and map of conformational space
