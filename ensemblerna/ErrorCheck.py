@@ -279,12 +279,12 @@ def checkDB(filename, dir, length=None):
 
 ##########################################################################################################
 #Function to check size
-#Input: size, sequence length
+#Input: size, sequence length, range
 #Output: True/False
 ##########################################################################################################
 def checkSize(size, n, rg):
     if size < 1:
-        sys.exit("ERROR: Map size must be larger than 0.")
+        sys.exit("ERROR: Map size must be larger than 0")
     if size > n:
         sys.exit("ERROR: Map size cannot be larger than sequence length")
     if size > len(rg):
@@ -293,13 +293,39 @@ def checkSize(size, n, rg):
     return True
 
 ##########################################################################################################
-#Function to thread maximum
-#Input: thread maximum
+#Function to check number of base pairs to ignore a stems
+#Input: ignore, sequence length, range
+#Output: True/False
+##########################################################################################################
+def checkIgnore(ignore, n, rg):
+    if ignore <= 0:
+        sys.exit("ERROR: Ignore flag must be a positive number")
+    if ignore > n/2:
+        sys.exit("ERROR: Ignore flag cannot be larger than half the sequence length")
+    if ignore > len(rg)/2:
+        sys.exit("ERROR: Ignore flag cannot be larger than half the range")
+    
+    return True
+
+##########################################################################################################
+#Function to check thread minimum
+#Input: thread minmum
 #Output: True/False
 ##########################################################################################################
 def checkThmax(thmax):
     if thmax < 1:
         sys.exit("ERROR: Number of threads must be larger than 0.")
+    
+    return True
+
+##########################################################################################################
+#Function to check sample minimum
+#Input: sample minimum
+#Output: True/False
+##########################################################################################################
+def checkNumsamp(numsamp):
+    if numsamp < 1:
+        sys.exit("ERROR: Number of stochastically sampled structures must be larger than 0.")
     
     return True
 

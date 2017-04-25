@@ -71,7 +71,7 @@ def _con2db(dir, con_file, outfile):
 #Input: directory, fasta file header, number of sequences in map
 #Output: 1D array
 ##########################################################################################################
-def _getBasePairing(dir, j, vec, se, i, rsp, threadLimiter):
+def _getBasePairing(dir, j, vec, se, i, rsp, lf, threadLimiter):
     #limit thread
     threadLimiter.acquire()
     
@@ -115,7 +115,7 @@ def _getBasePairing(dir, j, vec, se, i, rsp, threadLimiter):
         values = values[index]
         groups = groups[index]
         values[1:] = values[1:] - values[:-1]
-        diff = numpy.setdiff1d(list(range(1,(len(vec)+1))), groups.tolist())
+        diff = numpy.setdiff1d(lf, groups.tolist())
         nt = numpy.append(groups, diff)
         prob = numpy.append(values, numpy.zeros(len(diff)))
         bp2 = numpy.append([nt], [prob], axis=0)
@@ -148,6 +148,7 @@ def getMapSeqs(dir, fasta_file, n, rg, rsp, thmax=1):
     mutseqs = ['' for i in range(len(rg)+1)]
     threads = [[] for i in range(len(rg)+1)]
     indices = [0]+[i+1 for i in rg]
+    lf = range(1,len(fasta_file)+1,1)
     
     #print update to standard out
     print("Calculating partition functions for map of conformational space...")
@@ -186,7 +187,7 @@ def getMapSeqs(dir, fasta_file, n, rg, rsp, thmax=1):
         subprocess.check_output(cmd, shell=True)
         
         #get base pairing probability and shannon entropy
-        threads[i] = Thread(target=_getBasePairing, args=(dir, j, vec, se, i, rsp, threadLimiter))
+        threads[i] = Thread(target=_getBasePairing, args=(dir, j, vec, se, i, rsp, lf, threadLimiter))
         threads[i].start()
     
     for i in range(len(threads)):
@@ -218,7 +219,7 @@ def getMapSeqs(dir, fasta_file, n, rg, rsp, thmax=1):
 
     #hierarchical cluster
     count = 0
-    d = spsp.distance.pdist(vec)
+    d = spsp.distance.pdist(vec) #euclidean
     hc = spcl.hierarchy.linkage(d)
     tree = spcl.hierarchy.fcluster(hc, n, 'maxclust')
     num = len(set(tree))
@@ -268,7 +269,7 @@ def getMapStruct(dir, mapinds, outfile):
 
 ##########################################################################################################
 #Function to determine structures
-#Input: directory, fasta file header, cluster number, number of sampled structures
+#Input: directory, fasta file header, number of samples
 #Output: db file
 ##########################################################################################################
 def getStruct(dir, outfile, numsamp):
@@ -277,7 +278,7 @@ def getStruct(dir, outfile, numsamp):
     print("Generating structures for input RNA...")
 
     #runs stochastic without SHAPE contraints
-    cmd = 'stochastic ' + dir + 'temp.pfs ' + dir + 'temp.con -e ' + str(numsamp) 
+    cmd = 'stochastic ' + dir + 'temp.pfs ' + dir + 'temp.con -e ' + str(numsamp)
     subprocess.check_output(cmd, shell=True)
     
     #converts to dot bracket notation
@@ -289,7 +290,7 @@ def getStruct(dir, outfile, numsamp):
 
 ##########################################################################################################
 #Function to determine structures with SHAPE constraints
-#Input: directiory, fasta file, shape file, outfile, number of sampled structures
+#Input: directiory, fasta file, shape file, outfile, number of samples
 #Output: db file
 ##########################################################################################################
 def getStructSHAPE(dir, outfile, numsamp):

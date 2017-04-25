@@ -17,10 +17,10 @@ from ensemblerna.PlotInter import *
 
 ##########################################################################################################
 #Function to create map of conformational space
-#Input: fasta sequence, file header, output directory, map size
+#Input: fasta sequence, file header, output directory, map size, ignore flag
 #Output: map positions, map 2D matrix, map sequences, map dot bracket structures
 ##########################################################################################################
-def _getMap(fasta, header, dir, size, plotm, rg, rsp, thmax):
+def _getMap(fasta, header, dir, size, plotm, rg, rsp, thmax, ignore):
     
     #initialize variables
     header = re.split('/', header)
@@ -34,7 +34,7 @@ def _getMap(fasta, header, dir, size, plotm, rg, rsp, thmax):
     getMapStruct(dir, mapinds, header+'_map.db')
     
     #encode map structure
-    bin_mat_2d = encodeStructsNested(dir+header+'_map', rg)
+    bin_mat_2d = encodeStructsNested(dir+header+'_map', rg, ignore)
     map2d = bin_mat_2d['norm2d_']
     mapdb = bin_mat_2d['db_']
     
@@ -56,7 +56,7 @@ def _getMap(fasta, header, dir, size, plotm, rg, rsp, thmax):
 #Input: dot-bracket file, file header, output directory, map size
 #Output: map positions, map 2D matrix, map sequences, map dot bracket structures
 ##########################################################################################################
-def _getMapDB(mapdb, header, dir, size, plotm, rg):
+def _getMapDB(mapdb, header, dir, size, plotm, rg, ignore):
     
     #initialize variables
     header = re.split('/', header)
@@ -68,7 +68,7 @@ def _getMapDB(mapdb, header, dir, size, plotm, rg):
     subprocess.check_output(cmd, shell=True)
     
     #encode map structure
-    bin_mat_2d = encodeStructsNested(dir+header+'_map', rg)
+    bin_mat_2d = encodeStructsNested(dir+header+'_map', rg, ignore)
     map2d = bin_mat_2d['norm2d_']
     mapdb = bin_mat_2d['db_']
     
@@ -88,10 +88,10 @@ def _getMapDB(mapdb, header, dir, size, plotm, rg):
 
 ##########################################################################################################
 #Function to create reference visualization
-#Input: map object, fasta sequence, file header,output directory, shape data
+#Input: map object, fasta sequence, file header,output directory, ignore flag, number of samples, shape data
 #Output: csv, db, pdf, png
 ##########################################################################################################
-def _getRef(map, fasta, header, dir, rg, plotint, shape=None):
+def _getRef(map, fasta, header, dir, rg, plotint, ignore, numsamp, shape=None):
     
     #initialize variables
     header = re.split('/', header)
@@ -100,12 +100,12 @@ def _getRef(map, fasta, header, dir, rg, plotint, shape=None):
     
     #get structure
     if shape is None:
-        getStruct(dir, header+'.db')
+        getStruct(dir, header+'.db', numsamp)
     else:
-        getStructSHAPE(dir, header+'.db')
+        getStructSHAPE(dir, header+'.db', numsamp)
 
     #read structure
-    bin_mat_2d = encodeStructsNested(dir+header, rg)
+    bin_mat_2d = encodeStructsNested(dir+header, rg, ignore)
     ref2d = bin_mat_2d['norm2d_']
     refdb = bin_mat_2d['db_']
     
@@ -138,10 +138,10 @@ def _getRef(map, fasta, header, dir, rg, plotint, shape=None):
 
 ##########################################################################################################
 #Function to create reference visualization with dot bracket
-#Input: map object, dot bracket, file header,output directory
+#Input: map object, dot bracket, file header, ignore flag, output directory
 #Output: csv, db, pdf, png
 ##########################################################################################################
-def _getRefDB(map, db, header, dir, rg, plotint, md=None):
+def _getRefDB(map, db, header, dir, rg, plotint, ignore, md=None):
     
     #initialize variables
     header = re.split('/', header)
@@ -158,7 +158,7 @@ def _getRefDB(map, db, header, dir, rg, plotint, md=None):
     subprocess.check_output(cmd, shell=True)
 
     #read structure
-    bin_mat_2d = encodeStructsNested(dir+header, rg)
+    bin_mat_2d = encodeStructsNested(dir+header, rg, ignore)
     ref2d = bin_mat_2d['norm2d_']
     refdb = bin_mat_2d['db_']
     
@@ -207,8 +207,8 @@ def main():
     parser.add_argument('-sh', metavar='--shape', type=str, dest='shape_file', default=None, help='Includes shape data in the reference ensemble prediction. Ignored if -d flag is used (Default is None)')
     parser.add_argument('-d', metavar='--db', type=str, dest='db_file', default=None, help='Dot-bracket structures for reference ensemble (Default is None)')
     parser.add_argument('-m', metavar='--map', type=str, dest='map_file', default=None, help='Sequence to create the map of conformational space. Ignored if -md flag is used (Default is reference fasta file)')
-    parser.add_argument('-md', metavar='--mapdb', type=str, dest='map_dbfile', default=None, help='Dot-bracket structures for the map of conformational space. (Default is the reference fasta file)')
-    parser.add_argument('-s', metavar='--size', dest='size', type=int, default=10, help='Number of sequences for the map of conformational space. Ignored if -md flag is used (Default is 10)')
+    parser.add_argument('-md', metavar='--mapdb', type=str, dest='map_dbfile', default=None, help='Dot-bracket structures for the map of conformational space. A previously created map can be used to project new ensembles onto the same space. (Default is None)')
+    parser.add_argument('-s', metavar='--size', dest='size', type=int, default=10, help='Number of sequences for the map of conformational space. Higher numbers increase structural diversity. Ignored if -md flag is used (Default is 10)')
     parser.add_argument('-p', metavar='--plotmap', dest='plotm', type=str, choices=['T', 'F'], default='T', help='Plot the map T/F (Default is T)')
     parser.add_argument('-r', metavar='--range', dest='nucrg', type=int, nargs=2, default=None, help='Range of nucleotides to visualize. Predicted structures will still include the full length of the input RNA, but only the given range will be plotted (Default is 1 to sequence length)')
     parser.add_argument('-maxd', metavar='--maxdistance', dest='maxd', type=int, default=None, help='Maximum number of bases between the two nucleotides in a pair (Default is no restriction)')
@@ -217,6 +217,8 @@ def main():
     parser.add_argument('-sm', metavar='--SHAPEslope', dest='slope', type=int, default=None, help='Slope used with SHAPE restraints. Ignored if -d flag is used (Default is 1.8 kcal/mol)')
     parser.add_argument('-pi', metavar='--plotinteractive', dest='plotint', type=str, choices=['T', 'F'], default='T', help='Plot the interactive file T/F (Default is T)')
     parser.add_argument('-th', metavar='--threadmax', dest='thmax', type=int, default=1, help='Maximum number of threads for multi-threading. (Default is 1)')
+    parser.add_argument('-i', metavar='--ignorestems', dest='ignore', type=int, default=3, help='Ignore stems with fewer than i base pairs. (Default is 3)')
+    parser.add_argument('-n', metavar='--num', dest='numsamp', type=int, default=1000, help='Number of Boltzmann sampled structures to produce for the visualization. (Default is 1000)')
     args = parser.parse_args()
     fasta_file = args.input
     outdir = args.output
@@ -233,6 +235,8 @@ def main():
     tempcalc = args.tempcalc
     plotint = args.plotint
     thmax = args.thmax
+    ignore = args.ignore
+    numsamp = args.numsamp
     
     #initialize variables
     header = fasta_file.split('/')[-1]
@@ -252,7 +256,9 @@ def main():
     else:
         rg = checkRange(nucrg, len(fasta))
     checkSize(size, len(fasta), rg)
+    checkIgnore(ignore, len(fasta), rg)
     checkThmax(thmax)
+    checkNumsamp(numsamp)
 
     #check RNAstructure parameters
     rsp = ''
@@ -296,17 +302,17 @@ def main():
             mfasta = fasta
 
         #get map
-        map = _getMap(mfasta, header, outdir, size, plotm, rg, rsp, thmax)
+        map = _getMap(mfasta, header, outdir, size, plotm, rg, rsp, thmax, ignore)
 
     #choose reference function (db or fasta)
     if db_file is not None:
         #visualize reference
         if map_dbfile is None:
-            ref = _getRefDB(map, db_file, header, outdir, rg, plotint)
+            ref = _getRefDB(map, db_file, header, outdir, rg, plotint, ignore, numsamp)
         else:
-            ref = _getRefDB(map, db_file, header, outdir, rg, plotint, md=1)
+            ref = _getRefDB(map, db_file, header, outdir, rg, plotint, ignore, md=1)
     else:
         #visualize reference
-        ref = _getRef(map, fasta, header, outdir, rg, plotint, shape)
+        ref = _getRef(map, fasta, header, outdir, rg, plotint, ignore, numsamp, shape)
 
 
