@@ -268,16 +268,16 @@ def getMapStruct(dir, mapinds, outfile):
 
 ##########################################################################################################
 #Function to determine structures
-#Input: directory, fasta file header, cluster number
+#Input: directory, fasta file header, cluster number, number of sampled structures
 #Output: db file
 ##########################################################################################################
-def getStruct(dir, outfile):
+def getStruct(dir, outfile, numsamp):
     
     #print update to standard out
     print("Generating structures for input RNA...")
 
     #runs stochastic without SHAPE contraints
-    cmd = 'stochastic ' + dir + 'temp.pfs ' + dir + 'temp.con -e 1000'
+    cmd = 'stochastic ' + dir + 'temp.pfs ' + dir + 'temp.con -e ' + str(numsamp) 
     subprocess.check_output(cmd, shell=True)
     
     #converts to dot bracket notation
@@ -289,16 +289,16 @@ def getStruct(dir, outfile):
 
 ##########################################################################################################
 #Function to determine structures with SHAPE constraints
-#Input: directiory, fasta file, shape file, outfile
+#Input: directiory, fasta file, shape file, outfile, number of sampled structures
 #Output: db file
 ##########################################################################################################
-def getStructSHAPE(dir, outfile):
+def getStructSHAPE(dir, outfile, numsamp):
     
     #print update to standard out
     print("Generating structures for input RNA...")
     
     #runs stochastic with SHAPE contraints
-    cmd = 'stochastic ' + dir + 'temp.pfs ' + dir + 'temp.con -e 1000'
+    cmd = 'stochastic ' + dir + 'temp.pfs ' + dir + 'temp.con -e ' + str(numsamp)
     subprocess.check_output(cmd, shell=True)
 
     #converts to dot bracket notation
